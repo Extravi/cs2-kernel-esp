@@ -77,5 +77,8 @@
     <ClInclude Include="src\render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
