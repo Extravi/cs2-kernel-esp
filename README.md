@@ -1,2 +1,2 @@
 # cs2-kernel-esp
-Kernel reads data for ESP and utilizes an external overlay to render it using DirectX.
+Utilizes a kernel driver for memory reading and external DirectX overlay rendering, enabling visual overlays that can display additional player information in CS2.
