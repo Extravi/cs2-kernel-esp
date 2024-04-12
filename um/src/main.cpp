@@ -436,8 +436,8 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
                 static int b = 255;
 
                 // RGB team
-                static int t_r = 255;
-                static int t_g = 0;
+                static int t_r = 0;
+                static int t_g = 160;
                 static int t_b = 255;
 
                 if (showImGui)
