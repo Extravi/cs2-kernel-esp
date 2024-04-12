@@ -6,3 +6,8 @@ Utilizes a kernel driver for memory reading and external DirectX overlay renderi
 <img src="https://raw.githubusercontent.com/Extravi/cs2-kernel-esp/main/screenshots/example.gif" width="600">
 <img src="https://raw.githubusercontent.com/Extravi/cs2-kernel-esp/main/screenshots/Screenshot%202024-04-12%20021914.png" width="600">
 <img src="https://raw.githubusercontent.com/Extravi/cs2-kernel-esp/main/screenshots/Screenshot%202024-04-12%20022006.png" width="600">
+
+## Authors
+Kernel Driver video by [cazz](https://www.youtube.com/watch?v=n463QJ4cjsU).
+
+ESP overlay made by [Extravi](https://extravi.dev/).
