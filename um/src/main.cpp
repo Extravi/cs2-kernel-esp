@@ -25,6 +25,9 @@ int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
 // global imgui menu
 bool showImGui = false;
+bool drawLines = true;
+bool showTeam = false;
+bool enableTrue = true;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -427,10 +430,15 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
                     Sleep(400);
                 }
 
-                // RGB
+                // RGB enemy
                 static int r = 255;
                 static int g = 0;
                 static int b = 255;
+
+                // RGB team
+                static int t_r = 255;
+                static int t_g = 0;
+                static int t_b = 255;
 
                 if (showImGui)
                 {
@@ -446,10 +454,22 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
                     g = static_cast<int>(color.y * 255.0f);
                     b = static_cast<int>(color.z * 255.0f);
 
+                    static ImVec4 t_color = ImVec4(t_r / 255.0f, t_g / 255.0f, t_b / 255.0f, 1.0f);
+                    ImGui::ColorEdit3("Team Color", (float*)&t_color);
+
+                    t_r = static_cast<int>(t_color.x * 255.0f);
+                    t_g = static_cast<int>(t_color.y * 255.0f);
+                    t_b = static_cast<int>(t_color.z * 255.0f);
+
+                    ImGui::Checkbox("Enable", &enableTrue);
+                    ImGui::Checkbox("Draw Lines", &drawLines);
+                    ImGui::Checkbox("Show Team", &showTeam);
+
                     ImGui::End();
                 }
 
                 RGB enemy = { r, g, b };
+                RGB team = { t_r, t_g, t_b };
 
                 for (int playerIndex = 1; playerIndex < 32; ++playerIndex) {
                     uintptr_t listentry = driver::read_memory<uintptr_t>(driver, entity_list + (8 * (playerIndex & 0x7FFF) >> 9) + 16);
@@ -464,8 +484,10 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
 
                     int playerTeam = driver::read_memory<int>(driver, player + m_iTeamNum);
 
-                    if (playerTeam == localTeam)
-                        continue;
+                    if (!showTeam) {
+                        if (playerTeam == localTeam)
+                            continue;
+                    }
 
                     uint32_t playerPawn = driver::read_memory<uint32_t>(driver, player + m_hPlayerPawn);
 
@@ -506,16 +528,37 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
                         screenHead.x + width / 2 <= screenWidth &&
                         screenHead.y >= 0 &&
                         screenHead.y + height <= screenHeight &&
-                        screenHead.z > 0) {
-                        Render::DrawLine(bottomCenterX, bottomCenterY, rectBottomX, rectBottomY, enemy, 1.5f);
-                        Render::DrawRect(
-                            screenHead.x - width / 2,
-                            screenHead.y,
-                            width,
-                            height,
-                            enemy,
-                            1.5
-                        );
+                        screenHead.z > 0 &&
+                        enableTrue == true) {
+
+                        if (playerTeam == localTeam) {
+                            // teammates with team color
+                            if (drawLines) {
+                                Render::DrawLine(bottomCenterX, bottomCenterY, rectBottomX, rectBottomY, team, 1.5f);
+                            }
+                            Render::DrawRect(
+                                screenHead.x - width / 2,
+                                screenHead.y,
+                                width,
+                                height,
+                                team,
+                                1.5
+                            );
+                        }
+                        else {
+                            // enemies with enemy color
+                            if (drawLines) {
+                                Render::DrawLine(bottomCenterX, bottomCenterY, rectBottomX, rectBottomY, enemy, 1.5f);
+                            }
+                            Render::DrawRect(
+                                screenHead.x - width / 2,
+                                screenHead.y,
+                                width,
+                                height,
+                                enemy,
+                                1.5
+                            );
+                        }
                     }
                 }
 
