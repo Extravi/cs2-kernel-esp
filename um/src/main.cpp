@@ -496,14 +496,27 @@ INT APIENTRY WinMain(HINSTANCE instance, HINSTANCE, PSTR, INT cmd_show) {
                     float height = screenPos.y - screenHead.y;
                     float width = height / 2.4f;
 
-                    Render::DrawRect(
-                        screenHead.x - width / 2,
-                        screenHead.y,
-                        width,
-                        height,
-                        enemy,
-                        1.5
-                    );
+                    int rectBottomX = screenHead.x;
+                    int rectBottomY = screenHead.y + height;
+
+                    int bottomCenterX = screenWidth / 2;
+                    int bottomCenterY = screenHeight;
+
+                    if (screenHead.x - width / 2 >= 0 &&
+                        screenHead.x + width / 2 <= screenWidth &&
+                        screenHead.y >= 0 &&
+                        screenHead.y + height <= screenHeight &&
+                        screenHead.z > 0) {
+                        Render::DrawLine(bottomCenterX, bottomCenterY, rectBottomX, rectBottomY, enemy, 1.5f);
+                        Render::DrawRect(
+                            screenHead.x - width / 2,
+                            screenHead.y,
+                            width,
+                            height,
+                            enemy,
+                            1.5
+                        );
+                    }
                 }
 
                 ImGui::Render();
