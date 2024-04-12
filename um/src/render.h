@@ -18,4 +18,9 @@ namespace Render
     {
         ImGui::GetBackgroundDrawList()->AddRect(ImVec2(x, y), ImVec2(x + w, y + h), Color(color), 0, 0, thickness);
     }
+
+    void DrawLine(int x1, int y1, int x2, int y2, RGB color, int thickness)
+    {
+        ImGui::GetBackgroundDrawList()->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), Color(color), thickness);
+    }
 }
